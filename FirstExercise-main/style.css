@@ -43,3 +43,8 @@ ul {
     font-size: 16px;
     cursor: pointer;
 }
+
+footer {
+  margin-top: 300px;
+  text-align: center;
+}
