@@ -10,13 +10,13 @@ import {
 import { getContacts, createContact } from "../contacts";
 import { useEffect } from "react";
 
-// Creates a new contact
+// Create a new contact.
 export async function action() {
   const contact = await createContact();
   return redirect(`/contacts/${contact.id}/edit`);
 }
 
-// Grabs contacts from the query, based from the url
+// Fetch contacts based on search query.
 export async function loader({ request }) {
   const url = new URL(request.url);
   const q = url.searchParams.get("q") || "";
@@ -24,31 +24,31 @@ export async function loader({ request }) {
   return { contacts, q }
 }
 
-// Displays the sidebar
+// Root component: Displays sidebar with search form, new contact button, and contact list.
 export default function Root() {
   const { contacts, q } = useLoaderData();
   const navigation = useNavigation();
   const submit = useSubmit();
 
-  // Used to see if a search is ongoing
+  // Check if a search is in progress.
   const searching =
     navigation.location &&
     new URLSearchParams(navigation.location.search).has(
       "q"
     );
+
+  // Set initial value of search input when q changes.
   useEffect(() => {
     document.getElementById("q").value = q;
   }, [q]);
 
-  
-
-  // Shows the contact list + button and search bar, all in a sidebar
+  // Render sidebar with search form, new contact button, and contact list.
   return (
     <>
       <div id="sidebar">
         <h1>React Router Contacts</h1>
         <div>
-        <Form id="search-form" role="search">
+          <Form id="search-form" role="search">
             <input
               id="q"
               className={searching ? "loading" : ""}
@@ -63,7 +63,7 @@ export default function Root() {
                   replace: !isFirstSearch,
                 });
               }}
-              />
+            />
             <div
               id="search-spinner"
               aria-hidden
@@ -79,14 +79,14 @@ export default function Root() {
           </Form>
         </div>
         
-         {/* Contact list */}
+        {/* Contact list */}
         <nav>
           {contacts.length ? (
             <ul>
               {contacts.map((contact) => (
-                <li key={contact.id}>
+                <li key={contact._id}>
                   <NavLink
-                    to={`contacts/${contact.id}`}
+                    to={`contacts/${contact._id}`}
                     className={({ isActive, isPending }) =>
                       isActive
                         ? "active"
@@ -119,7 +119,7 @@ export default function Root() {
         className={
           navigation.state === "loading" ? "loading" : ""
         }
-        >
+      >
         <Outlet />
       </div>
     </>

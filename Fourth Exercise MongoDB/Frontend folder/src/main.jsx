@@ -1,5 +1,3 @@
-// Imports all of the necessary libraries and addons
-
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import {
@@ -12,22 +10,23 @@ import Contact, {
   loader as contactLoader,
   action as contactAction,
 } from "./routes/contact";
-import Root, { loader as rootLoader } from "./routes/root";
+import Root, { loader as rootLoader,
+action as rootAction,
+} from "./routes/root";
 import EditContact, {
   action as editAction,
 } from "./routes/edit";
 import { action as destroyAction } from "./routes/destroy";
 import Index from "./routes/index";
 
-
-
-// Creates a router and adds its configurations to it
+// Create router with routes and configurations
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
     loader: rootLoader,
+    action: rootAction,
     children: [
       { index: true, element: <Index /> },
       {
@@ -51,7 +50,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-// This show the main application
+// Render main application with RouterProvider
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RouterProvider router={router} />
